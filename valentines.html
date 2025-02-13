@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentine's Day</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f8f8;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+
+        h1, h2, h3 {
+            color: #e74c3c;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+
+        input[type="text"], input[type="date"] {
+            padding: 10px;
+            width: 100%;
+            margin-bottom: 20px;
+            border: 2px solid #e74c3c;
+            border-radius: 5px;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 5px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        button:hover {
+            background-color: #c0392b;
+        }
+
+        .yes-btn {
+            background-color: #2ecc71; /* Green */
+        }
+
+        .yes-btn:hover {
+            background-color: #27ae60;
+        }
+
+        .no-btn {
+            background-color: #e74c3c; /* Red */
+        }
+
+        .no-btn:hover {
+            background-color: #c0392b;
+        }
+
+        .response {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .back-btn {
+            margin-top: 10px;
+            background-color: #bdc3c7;
+            color: black;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            border-radius: 5px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .back-btn:hover {
+            background-color: #95a5a6;
+        }
+
+        .sad-gif {
+            width: auto;
+            max-width: 100%; /* Same as button */
+            height: auto;
+            margin-top: 10px;
+            border-radius: 10px;
+            display: block;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1 id="namePrompt">Enter your name:</h1>
+        <input type="text" id="name" placeholder="Your Name">
+        <button onclick="greetUser()">Submit</button>
+
+        <div id="dobPrompt" style="display: none;">
+            <h2>For verification, please enter your date of birth:</h2>
+            <input type="date" id="dob">
+            <button onclick="verifyDob()">Verify</button>
+        </div>
+
+        <div id="greeting" style="display: none;">
+            <h2 id="valentineQuestion"></h2>
+            <button class="yes-btn" onclick="answer('yes')">Yes</button>
+            <p></p>
+            <button class="no-btn" onclick="answer('no')">No</button>
+        </div>
+
+        <div id="response" class="response">
+            <h3></h3>
+            <img id="sadGif" class="sad-gif" src="https://i.pinimg.com/originals/a3/e9/ff/a3e9ffb293d369deb48f22a38f35250b.gif" alt="Sad GIF" style="display: none;">
+            <button class="back-btn" onclick="goBack()">OK</button>
+        </div>
+    </div>
+
+    <script>
+    let userName = '';
+
+    function greetUser() {
+        const name = document.getElementById('name').value;
+        if (name) {
+            userName = name;
+            document.getElementById('namePrompt').style.display = 'none';
+            document.getElementById('name').style.display = 'none';
+            document.querySelector('button').style.display = 'none';
+            document.getElementById('dobPrompt').style.display = 'block';
+        } else {
+            alert("Please enter your name!");
+        }
+    }
+
+    function verifyDob() {
+        const dob = document.getElementById('dob').value;
+        const correctDob = '1997-05-03';
+
+        if (dob === correctDob) {
+            document.getElementById('dobPrompt').style.display = 'none';
+            document.getElementById('greeting').style.display = 'block';
+            document.getElementById('valentineQuestion').innerText = `Hi, ${userName}. Will you be my valentine?`;
+        } else {
+            document.getElementById('dobPrompt').style.display = 'none';
+            document.getElementById('response').style.display = 'block';
+            document.querySelector('#response h3').innerText = "Sorry, di po ikaw ang jowa ko. Please find your own jowa. Thanks.";
+            document.getElementById('sadGif').style.display = 'none'; // Hide GIF in this case
+            document.querySelector('.back-btn').innerText = "OK"; // Change button text to OK
+            document.querySelector('.back-btn').setAttribute("onclick", "location.reload()"); // Refresh page on click
+        }
+    }
+
+    function answer(choice) {
+        if (choice === 'no') {
+            document.getElementById('response').style.display = 'block';
+            document.querySelector('#response h3').innerText = "Di mo na ko lab?";
+            document.getElementById('sadGif').style.display = 'block';
+            document.getElementById('greeting').style.display = 'none';
+            document.querySelector('.back-btn').innerText = "Again"; // Change button text to "Again"
+            document.querySelector('.back-btn').setAttribute("onclick", "goBack()"); // Go back instead of refresh
+        } else if (choice === 'yes') {
+            window.open("https://i.imgur.com/0iD41bD.jpeg", "_blank");
+            document.getElementById('greeting').style.display = 'none';
+        }
+    }
+
+    function goBack() {
+        document.getElementById('response').style.display = 'none';
+        document.getElementById('greeting').style.display = 'block';
+    }
+</script>
+
+
+</body>
+</html>
